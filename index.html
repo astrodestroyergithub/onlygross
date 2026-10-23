@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <title>OnlyGross — Exclusive Creator Subscriptions (By Mr. Gross)</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            ogblue: '#00AFF0',
+            ogdark: '#0082B4'
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="antialiased selection:bg-[#00AFF0] selection:text-white">
+  <div id="app-shell" class="min-h-screen bg-slate-50 text-slate-900 flex flex-col transition-colors duration-200">
+    <!-- Toast Container -->
+    <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2"></div>
+
+    <!-- Main 3-Column Responsive Layout Container -->
+    <div class="max-w-[1280px] w-full mx-auto flex-1 grid grid-cols-1 md:grid-cols-12 pb-16 md:pb-0">
+      
+      <!-- Left Navigation Sidebar (Sticky on Tablet & Desktop) -->
+      <aside class="hidden md:flex md:col-span-2 lg:col-span-3 xl:col-span-3 flex-col justify-between sticky top-0 h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 lg:px-5 py-4 select-none">
+        <div class="space-y-1.5">
+          <!-- Brand Logo -->
+          <div onclick="switchView('home')" class="flex items-center gap-3 px-2 py-2 cursor-pointer group">
+            <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-[#00AFF0] to-sky-400 flex items-center justify-center text-white font-black text-lg shadow-md group-hover:scale-105 transition">
+              OG
+            </div>
+            <div class="hidden lg:block">
+              <div class="flex items-center gap-1">
+                <span class="text-xl font-black tracking-tight text-slate-900 dark:text-white">Only</span><span class="text-xl font-black tracking-tight text-[#00AFF0]">Gross</span>
+              </div>
+              <p class="text-[10px] font-semibold uppercase tracking-widest text-slate-400 -mt-1">By Mr. Gross</p>
+            </div>
+          </div>
+
+          <!-- Nav Links -->
+          <nav class="space-y-1 pt-2">
+            <button data-nav="home" onclick="switchView('home')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+              <span class="hidden lg:inline">Home</span>
+            </button>
+
+            <button data-nav="notifications" onclick="switchView('notifications')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <div class="flex items-center gap-4">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+                <span class="hidden lg:inline">Notifications</span>
+              </div>
+              <span class="notif-badge bg-[#00AFF0] text-white text-[11px] font-bold px-2 py-0.5 rounded-full">3</span>
+            </button>
+
+            <button data-nav="messages" onclick="switchView('messages')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+              <span class="hidden lg:inline">Messages</span>
+            </button>
+
+            <button data-nav="bookmarks" onclick="switchView('bookmarks')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <div class="flex items-center gap-4">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg>
+                <span class="hidden lg:inline">Bookmarks</span>
+              </div>
+              <span class="bookmark-badge hidden lg:inline text-xs text-slate-400 font-bold">1</span>
+            </button>
+
+            <button data-nav="lists" onclick="switchView('lists')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+              <span class="hidden lg:inline">Lists</span>
+            </button>
+
+            <button data-nav="subscriptions" onclick="switchView('subscriptions')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span class="hidden lg:inline">Subscriptions</span>
+            </button>
+
+            <button data-nav="profile" onclick="openCreatorProfile('mrgross')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              <span class="hidden lg:inline">Mr. Gross Profile</span>
+            </button>
+
+            <button data-nav="statements" onclick="switchView('statements')" class="w-full flex items-center justify-between px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <div class="flex items-center gap-4">
+                <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                <span class="hidden lg:inline">Wallet & Cards</span>
+              </div>
+              <span class="wallet-balance-display hidden lg:inline text-xs font-extrabold text-emerald-500">$85.00</span>
+            </button>
+
+            <button data-nav="myprofile" onclick="switchView('myprofile')" class="w-full flex items-center gap-4 px-3 py-2.5 rounded-full hover:bg-sky-50 dark:hover:bg-slate-800 transition text-sm">
+              <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span class="hidden lg:inline">Settings</span>
+            </button>
+          </nav>
+
+          <!-- New Post CTA -->
+          <div class="pt-3">
+            <button onclick="openNewPostModal()" class="w-full og-btn-primary py-3 px-4 rounded-full font-bold text-sm uppercase tracking-wider shadow-md flex items-center justify-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+              <span class="hidden lg:inline">New Post</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Bottom Theme & Developer Credit -->
+        <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button onclick="toggleTheme()" class="w-full flex items-center justify-between px-3 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-xs font-bold">
+            <span class="hidden lg:inline">Theme Mode</span>
+            <span class="text-[#00AFF0]">Light / Dark</span>
+          </button>
+          <div class="hidden lg:block px-2 text-[11px] text-slate-400 leading-tight">
+            <p class="font-bold text-slate-600 dark:text-slate-300">Developed by Mr. Gross</p>
+            <p>© 2026 OnlyGross Platform</p>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Center Content Column -->
+      <main id="center-feed-column" class="col-span-1 md:col-span-10 lg:col-span-6 xl:col-span-6 min-h-screen border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900">
+        <!-- Populated dynamically by app.js -->
+      </main>
+
+      <!-- Right Discovery Sidebar (Desktop) -->
+      <aside class="hidden lg:flex lg:col-span-3 xl:col-span-3 flex-col gap-5 p-4 sticky top-0 h-screen overflow-y-auto bg-slate-50 dark:bg-slate-950">
+        <!-- Search Input -->
+        <div class="relative">
+          <input type="text" oninput="handleSearchInput(this.value)" placeholder="Search OnlyGross posts or creators..." class="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-full pl-10 pr-4 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-[#00AFF0]"/>
+          <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <!-- Wallet Quick Widget -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Your Wallet</span>
+            <span class="wallet-balance-display text-sm font-black text-emerald-500">$85.00</span>
+          </div>
+          <button onclick="addWalletFunds(25)" class="w-full py-2 rounded-full border border-[#00AFF0] text-[#00AFF0] hover:bg-[#00AFF0] hover:text-white text-xs font-bold transition">
+            + Instant $25 Top-Up
+          </button>
+        </div>
+
+        <!-- Suggestions Box -->
+        <div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Suggestions</h3>
+            <button onclick="switchView('subscriptions')" class="text-xs font-bold text-[#00AFF0] hover:underline">View All</button>
+          </div>
+          <div id="suggestions-list" class="space-y-3"></div>
+        </div>
+
+        <!-- Footer & Explicit Developer Credit -->
+        <footer class="text-xs text-slate-400 space-y-2 px-1 mt-auto pb-4">
+          <div class="p-3 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
+            <p class="font-bold text-slate-700 dark:text-slate-200">Developer Credit: Mr. Gross</p>
+            <p class="text-[11px] mt-0.5">Crafted with precision by Mr. Gross. Optimized for Netlify deployment across all resolutions.</p>
+          </div>
+          <div class="flex flex-wrap gap-x-3 gap-y-1 text-[11px]">
+            <button onclick="switchView('myprofile')" class="hover:text-[#00AFF0]">Privacy</button>
+            <span>•</span>
+            <button onclick="switchView('statements')" class="hover:text-[#00AFF0]">Billing Terms</button>
+            <span>•</span>
+            <button onclick="openCreatorProfile('mrgross')" class="hover:text-[#00AFF0]">Mr. Gross Lab</button>
+          </div>
+        </footer>
+      </aside>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar (Responsive <768px) -->
+    <nav class="md:hidden fixed bottom-0 inset-x-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 px-2 py-1.5 flex items-center justify-around">
+      <button data-nav="home" onclick="switchView('home')" class="p-2 rounded-full flex flex-col items-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        <span class="text-[10px] mt-0.5">Home</span>
+      </button>
+      <button data-nav="notifications" onclick="switchView('notifications')" class="p-2 rounded-full flex flex-col items-center relative">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
+        <span class="notif-badge absolute top-1 right-2 bg-[#00AFF0] text-white text-[9px] font-bold px-1.5 rounded-full">3</span>
+        <span class="text-[10px] mt-0.5">Alerts</span>
+      </button>
+      <button onclick="openNewPostModal()" class="og-btn-primary p-2.5 rounded-full shadow-md">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+      </button>
+      <button data-nav="messages" onclick="switchView('messages')" class="p-2 rounded-full flex flex-col items-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/></svg>
+        <span class="text-[10px] mt-0.5">Chat</span>
+      </button>
+      <button data-nav="profile" onclick="openCreatorProfile('mrgross')" class="p-2 rounded-full flex flex-col items-center">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <span class="text-[10px] mt-0.5">Profile</span>
+      </button>
+    </nav>
+
+    <!-- MODAL 1: Send Tip Modal -->
+    <div id="tip-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-extrabold text-base uppercase">Send Tip on OnlyGross</h3>
+          <button onclick="closeTipModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+        <p class="text-xs text-slate-500 mb-3">Recipient: <strong id="tip-modal-creator" class="text-[#00AFF0]">Mr. Gross Official</strong></p>
+        <div class="grid grid-cols-4 gap-2 mb-3">
+          <button type="button" onclick="selectTipPreset(5)" class="py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs hover:border-[#00AFF0] hover:text-[#00AFF0]">$5</button>
+          <button type="button" onclick="selectTipPreset(10)" class="py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs hover:border-[#00AFF0] hover:text-[#00AFF0]">$10</button>
+          <button type="button" onclick="selectTipPreset(25)" class="py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs hover:border-[#00AFF0] hover:text-[#00AFF0]">$25</button>
+          <button type="button" onclick="selectTipPreset(50)" class="py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs hover:border-[#00AFF0] hover:text-[#00AFF0]">$50</button>
+        </div>
+        <form onsubmit="submitTipForm(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Tip Amount ($ USD)</label>
+            <input type="number" id="tip-amount-input" value="10" min="1" step="1" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-[#00AFF0]"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Message (Optional)</label>
+            <input type="text" id="tip-note-input" placeholder="Keep up the awesome experiments!" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#00AFF0]"/>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeTipModal()" class="px-4 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800">Cancel</button>
+            <button type="submit" class="og-btn-primary px-6 py-2 rounded-full text-xs font-bold uppercase">Send Tip</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL 2: New Post Composer Modal -->
+    <div id="new-post-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-lg w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-extrabold text-base uppercase">Create New OnlyGross Post</h3>
+          <button onclick="closeNewPostModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+        <form onsubmit="submitNewPostForm(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Post Caption</label>
+            <textarea id="new-post-text" rows="3" placeholder="Share a new oddity lab experiment, studio update, or subscriber announcement..." class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#00AFF0]"></textarea>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Vault Media Asset</label>
+              <select id="new-post-media" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none">
+                <option value="post1">Bioluminescent Slime Terrarium</option>
+                <option value="post2">SFX Monster Prosthetic Workshop</option>
+                <option value="cover">Mr. Gross Neon Studio Lab</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase text-slate-400 mb-1">PPV Lock Price ($0 = Free)</label>
+              <input type="number" id="new-post-price" value="0" min="0" step="0.50" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none"/>
+            </div>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeNewPostModal()" class="px-4 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800">Cancel</button>
+            <button type="submit" class="og-btn-primary px-6 py-2 rounded-full text-xs font-bold uppercase">Publish Post</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- MODAL 3: Story Viewer Modal -->
+    <div id="story-modal" class="hidden fixed inset-0 z-50 bg-black/90 flex items-center justify-center p-4">
+      <div class="relative max-w-md w-full rounded-2xl overflow-hidden bg-slate-900 border border-white/15 shadow-2xl">
+        <div class="p-3 flex items-center justify-between bg-gradient-to-b from-black/80 to-transparent absolute top-0 inset-x-0 z-10 text-white">
+          <div class="flex items-center gap-2.5">
+            <img id="story-modal-avatar" src="assets/avatar.jpg" alt="Story Avatar" class="w-9 h-9 rounded-full object-cover border-2 border-[#00AFF0]"/>
+            <div>
+              <p id="story-modal-name" class="font-bold text-xs">Mr. Gross Official</p>
+              <p id="story-modal-time" class="text-[10px] text-slate-300">Just now</p>
+            </div>
+          </div>
+          <button onclick="closeStoryModal()" class="text-white text-lg font-bold px-2">✕</button>
+        </div>
+        <img id="story-modal-img" src="assets/cover.jpg" alt="Story" class="w-full h-[460px] object-cover"/>
+        <div class="p-4 bg-slate-950 text-white">
+          <p id="story-modal-caption" class="text-xs sm:text-sm"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL 4: Media Lightbox -->
+    <div id="lightbox-modal" onclick="closeLightbox()" class="hidden fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
+      <img id="lightbox-img" src="assets/post1.jpg" alt="Full View" class="max-h-[82vh] max-w-full rounded-xl object-contain shadow-2xl"/>
+      <p id="lightbox-caption" class="text-white text-xs font-semibold mt-3"></p>
+    </div>
+
+    <!-- MODAL 5: Create List Modal -->
+    <div id="create-list-modal" class="hidden fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4">
+      <div class="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full p-5 border border-slate-200 dark:border-slate-800 shadow-2xl">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="font-extrabold text-base uppercase">Create New Creator List</h3>
+          <button onclick="closeCreateListModal()" class="text-slate-400 hover:text-slate-600">✕</button>
+        </div>
+        <form onsubmit="submitCreateListForm(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">List Name</label>
+            <input type="text" id="new-list-name" placeholder="e.g., Favorite Bio-Art Labs" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none"/>
+          </div>
+          <div>
+            <label class="block text-xs font-bold uppercase text-slate-400 mb-1">Description</label>
+            <input type="text" id="new-list-desc" placeholder="Creators I watch every week" class="w-full bg-slate-100 dark:bg-slate-800 rounded-xl px-3.5 py-2.5 text-sm focus:outline-none"/>
+          </div>
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeCreateListModal()" class="px-4 py-2 rounded-full text-xs font-bold bg-slate-100 dark:bg-slate-800">Cancel</button>
+            <button type="submit" class="og-btn-primary px-6 py-2 rounded-full text-xs font-bold uppercase">Create List</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+/* OnlyGross Custom Styles - Engineered by Mr. Gross */
+:root {
+  --og-blue: #00AFF0;
+  --og-blue-hover: #0095CC;
+  --og-blue-light: #E6F7FE;
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.4);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.7);
+}
+
+.og-btn-primary {
+  background-color: #00AFF0;
+  color: #ffffff;
+  transition: all 0.18s ease;
+}
+.og-btn-primary:hover {
+  background-color: #0095CC;
+}
+.og-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.og-text-blue {
+  color: #00AFF0;
+}
+
+.og-border-blue {
+  border-color: #00AFF0;
+}
+
+.locked-blur {
+  filter: blur(18px) brightness(0.75);
+  transform: scale(1.08);
+  user-select: none;
+  pointer-events: none;
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  70% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(1.15); opacity: 0; }
+}
+
+.story-ring {
+  background: linear-gradient(135deg, #00AFF0 0%, #00d4ff 50%, #0077b6 100%);
+  padding: 2.5px;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
